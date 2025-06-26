@@ -5,10 +5,22 @@ function AutoExportXrkData()
         loadlibrary(dllPath, @AccessAimXrk, 'alias', 'AccessAimXrk');
     end
     
-    % Create data directory if it doesn't exist
+    % Create data directory structure if it doesn't exist
     dataDir = fullfile(pwd, 'data');
     if ~exist(dataDir, 'dir')
         mkdir(dataDir);
+    end
+    
+    % Create sort_by_lap and sort_by_heading directories
+    sortByLapDir = fullfile(dataDir, 'sort_by_lap');
+    sortByHeadingDir = fullfile(dataDir, 'sort_by_heading');
+    
+    if ~exist(sortByLapDir, 'dir')
+        mkdir(sortByLapDir);
+    end
+    
+    if ~exist(sortByHeadingDir, 'dir')
+        mkdir(sortByHeadingDir);
     end
 
     % Find first .xrk file in directory
@@ -38,20 +50,34 @@ function AutoExportXrkData()
                 filename = sprintf('channel_%s_lap%d.csv', chName, iLap+1);
                 filename = strrep(filename, ' ', '_');
                 
-                % Create lap and channel directories if they don't exist
-                lapDir = fullfile(dataDir, sprintf('lap_%d', iLap+1));
+                % Create directories for sort_by_lap structure
+                lapDir = fullfile(sortByLapDir, sprintf('lap_%d', iLap+1));
                 if ~exist(lapDir, 'dir')
                     mkdir(lapDir);
                 end
                 
-                chanDir = fullfile(lapDir, 'channel');
-                if ~exist(chanDir, 'dir')
-                    mkdir(chanDir);
+                chanDirByLap = fullfile(lapDir, 'channel');
+                if ~exist(chanDirByLap, 'dir')
+                    mkdir(chanDirByLap);
                 end
                 
-                % Save to data/lap_X/channel/ directory
-                fullPath = fullfile(chanDir, filename);
-                writecell([{'Time', chName}; num2cell(data)], fullPath);
+                % Create directories for sort_by_heading structure
+                chanDirByHeading = fullfile(sortByHeadingDir, 'channel');
+                if ~exist(chanDirByHeading, 'dir')
+                    mkdir(chanDirByHeading);
+                end
+                
+                lapDirByHeading = fullfile(chanDirByHeading, sprintf('lap_%d', iLap+1));
+                if ~exist(lapDirByHeading, 'dir')
+                    mkdir(lapDirByHeading);
+                end
+                
+                % Save to both directory structures
+                fullPathByLap = fullfile(chanDirByLap, filename);
+                fullPathByHeading = fullfile(lapDirByHeading, filename);
+                
+                writecell([{'Time', chName}; num2cell(data)], fullPathByLap);
+                writecell([{'Time', chName}; num2cell(data)], fullPathByHeading);
             end
         end
     end
@@ -71,20 +97,34 @@ function AutoExportXrkData()
                 filename = sprintf('gps_%s_lap%d.csv', chName, iLap+1);
                 filename = strrep(filename, ' ', '_');
                 
-                % Create lap and GPS directories if they don't exist
-                lapDir = fullfile(dataDir, sprintf('lap_%d', iLap+1));
+                % Create directories for sort_by_lap structure
+                lapDir = fullfile(sortByLapDir, sprintf('lap_%d', iLap+1));
                 if ~exist(lapDir, 'dir')
                     mkdir(lapDir);
                 end
                 
-                gpsDir = fullfile(lapDir, 'gps');
-                if ~exist(gpsDir, 'dir')
-                    mkdir(gpsDir);
+                gpsDirByLap = fullfile(lapDir, 'gps');
+                if ~exist(gpsDirByLap, 'dir')
+                    mkdir(gpsDirByLap);
                 end
                 
-                % Save to data/lap_X/gps/ directory
-                fullPath = fullfile(gpsDir, filename);
-                writecell([{'Time', chName}; num2cell(data)], fullPath);
+                % Create directories for sort_by_heading structure
+                gpsDirByHeading = fullfile(sortByHeadingDir, 'gps');
+                if ~exist(gpsDirByHeading, 'dir')
+                    mkdir(gpsDirByHeading);
+                end
+                
+                lapDirByHeading = fullfile(gpsDirByHeading, sprintf('lap_%d', iLap+1));
+                if ~exist(lapDirByHeading, 'dir')
+                    mkdir(lapDirByHeading);
+                end
+                
+                % Save to both directory structures
+                fullPathByLap = fullfile(gpsDirByLap, filename);
+                fullPathByHeading = fullfile(lapDirByHeading, filename);
+                
+                writecell([{'Time', chName}; num2cell(data)], fullPathByLap);
+                writecell([{'Time', chName}; num2cell(data)], fullPathByHeading);
             end
         end
     end
@@ -104,20 +144,34 @@ function AutoExportXrkData()
                 filename = sprintf('rawgps_%s_lap%d.csv', chName, iLap+1);
                 filename = strrep(filename, ' ', '_');
                 
-                % Create lap and rawgps directories if they don't exist
-                lapDir = fullfile(dataDir, sprintf('lap_%d', iLap+1));
+                % Create directories for sort_by_lap structure
+                lapDir = fullfile(sortByLapDir, sprintf('lap_%d', iLap+1));
                 if ~exist(lapDir, 'dir')
                     mkdir(lapDir);
                 end
                 
-                rawgpsDir = fullfile(lapDir, 'rawgps');
-                if ~exist(rawgpsDir, 'dir')
-                    mkdir(rawgpsDir);
+                rawgpsDirByLap = fullfile(lapDir, 'rawgps');
+                if ~exist(rawgpsDirByLap, 'dir')
+                    mkdir(rawgpsDirByLap);
                 end
                 
-                % Save to data/lap_X/rawgps/ directory
-                fullPath = fullfile(rawgpsDir, filename);
-                writecell([{'Time', chName}; num2cell(data)], fullPath);
+                % Create directories for sort_by_heading structure
+                rawgpsDirByHeading = fullfile(sortByHeadingDir, 'rawgps');
+                if ~exist(rawgpsDirByHeading, 'dir')
+                    mkdir(rawgpsDirByHeading);
+                end
+                
+                lapDirByHeading = fullfile(rawgpsDirByHeading, sprintf('lap_%d', iLap+1));
+                if ~exist(lapDirByHeading, 'dir')
+                    mkdir(lapDirByHeading);
+                end
+                
+                % Save to both directory structures
+                fullPathByLap = fullfile(rawgpsDirByLap, filename);
+                fullPathByHeading = fullfile(lapDirByHeading, filename);
+                
+                writecell([{'Time', chName}; num2cell(data)], fullPathByLap);
+                writecell([{'Time', chName}; num2cell(data)], fullPathByHeading);
             end
         end
     end
@@ -126,5 +180,5 @@ function AutoExportXrkData()
     calllib('AccessAimXrk', 'close_file_i', iFile);
     unloadlibrary('AccessAimXrk');
 
-    fprintf('✅ All channel data exported to data directory for file: %s\n', sFilename);
+    fprintf('✅ All channel data exported to data directory (sort_by_lap and sort_by_heading) for file: %s\n', sFilename);
 end
